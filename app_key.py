@@ -13,7 +13,7 @@ st.set_page_config(
 col_left, col_right = st.columns([1, 1])
 
 # -------------------------
-# --- Inizializzazione stato sessione  ---
+# --- Inizializzazione stato sessione   ---
 # -------------------------
 if "team_players_home" not in st.session_state:
     st.session_state.team_players_home = []
