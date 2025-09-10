@@ -1,0 +1,16 @@
+# Large Files
+*.zip
+
+# Python
+__pycache__/
+
+#Dataset
+paper_Miraoui
+*.csv
+*.json
+*.faiss
+
+#Dataset 
+data/
+indexes/
+bin/
