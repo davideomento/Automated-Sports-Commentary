@@ -9,7 +9,7 @@ st.set_page_config(
     initial_sidebar_state="auto"
 )
 # --- OpenAI Key ---
-
+openai.api_key = st.secrets["OPENAI_API_KEY"]
 col_left, col_right = st.columns([1, 1])
 
 # -------------------------

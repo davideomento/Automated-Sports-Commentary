@@ -14,3 +14,6 @@ paper_Miraoui
 data/
 indexes/
 bin/
+
+# OpenAI Key
+secrets.toml
