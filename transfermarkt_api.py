@@ -1,108 +1,73 @@
 import requests
+import time
 
 BASE_URL = "http://127.0.0.1:8000"
+MAX_RETRIES = 10
+RETRY_DELAY = 1  # secondi
+
+
+def safe_get(url):
+    """Esegue GET con retry, restituisce None se non va a buon fine"""
+    for attempt in range(1, MAX_RETRIES + 1):
+        try:
+            response = requests.get(url)
+            if response.ok:
+                return response.json()
+            else:
+                print(f"[Attempt {attempt}] Error {response.status_code} for URL: {url}")
+        except requests.exceptions.RequestException as e:
+            print(f"[Attempt {attempt}] RequestException: {e} for URL: {url}")
+        time.sleep(RETRY_DELAY)
+    print(f"Failed to get data from {url} after {MAX_RETRIES} attempts.")
+    return None
+
 
 def search_team_by_name(name):
-    url = f"{BASE_URL}/clubs/search/{name}"
-    response = requests.get(url)
-    if response.ok:
-        results = response.json()
-        if results and 'results' in results and len(results['results']) > 0:
-            return results['results'][0]['id']
-        else:
-            print(f"No team found with the name '{name}'")
-            return None
-    else:
-        print(f"Error searching team: {response.status_code}")
-        return None
+    results = safe_get(f"{BASE_URL}/clubs/search/{name}")
+    if results and 'results' in results and len(results['results']) > 0:
+        return results['results'][0]['id']
+    return None
 
 
 def search_player_by_name(name):
-    url = f"{BASE_URL}/players/search/{name}"
-    response = requests.get(url)
-    if response.ok:
-        results = response.json()
-        if results and 'results' in results and len(results['results']) > 0:
-            return results['results'][0]['id']
-        else:
-            print(f"No player found with the name '{name}'")
-            return None
-    else:
-        print(f"Error searching player: {response.status_code}")
-        return None
+    results = safe_get(f"{BASE_URL}/players/search/{name}")
+    if results and 'results' in results and len(results['results']) > 0:
+        return results['results'][0]['id']
+    return None
+
 
 def get_team_info(club_id):
-    url = f"{BASE_URL}/clubs/{club_id}/profile"
-    response = requests.get(url)
-    if response.ok:
-        return response.json()
-    else:
-        print(f"Error retrieving team info for {club_id}: {response.status_code}")
-        return None
-    
+    return safe_get(f"{BASE_URL}/clubs/{club_id}/profile")
+
+
 def get_team_players(club_id):
-    url = f"{BASE_URL}/clubs/{club_id}/players"
-    try:
-        response = requests.get(url)
-        response.raise_for_status()
-        data = response.json()
-        # Assumiamo che la chiave principale sia 'players' e sia una lista
-        return data.get('players', [])  
-    except requests.exceptions.RequestException as e:
-        print(f"Errore nel recupero dei giocatori per il club {club_id}: {e}")
-        return []  # lista vuota in caso di errore
-    
+    data = safe_get(f"{BASE_URL}/clubs/{club_id}/players")
+    if data and "players" in data:
+        return data["players"]
+    return []
+
+
 def get_player_info(player_id):
-    url = f"{BASE_URL}/players/{player_id}/profile"
-    response = requests.get(url)
-    if response.ok:
-        return response.json()
-    else:
-        print(f"Error retrieving player info for {player_id}: {response.status_code}")
-        return None
+    return safe_get(f"{BASE_URL}/players/{player_id}/profile")
+
 
 def get_player_stats(player_id):
-    url = f"{BASE_URL}/players/{player_id}/stats"
-    response = requests.get(url)
-    if response.ok:
-        return response.json()
-    else:
-        print(f"Error retrieving player stats for {player_id}: {response.status_code}")
-        return None
+    return safe_get(f"{BASE_URL}/players/{player_id}/stats")
+
 
 def get_player_achievements(player_id):
-    url = f"{BASE_URL}/players/{player_id}/achievements"
-    response = requests.get(url)
-    if response.ok:
-        return response.json()
-    else:
-        print(f"Error retrieving player achievements for {player_id}: {response.status_code}")
-        return None
-    
+    return safe_get(f"{BASE_URL}/players/{player_id}/achievements")
+
+
 def search_competition_by_name(name):
-    """Cerca la competizione per nome e restituisce l'ID."""
-    url = f"{BASE_URL}/competitions/search/{name}"
-    response = requests.get(url)
-    if response.ok:
-        results = response.json()
-        if results and 'results' in results and len(results['results']) > 0:
-            return results['results'][0]['id']
-        else:
-            print(f"No competition found with the name '{name}'")
-            return None
-    else:
-        print(f"Error searching competition: {response.status_code}")
-        return None
+    results = safe_get(f"{BASE_URL}/competitions/search/{name}")
+    if results and 'results' in results and len(results['results']) > 0:
+        return results['results'][0]['id']
+    return None
+
 
 def get_competition_clubs(competition_id):
-    """Restituisce info dettagliate della competizione."""
-    url = f"{BASE_URL}/competitions/{competition_id}/clubs"
-    response = requests.get(url)
-    if response.ok:
-        return response.json()
-    else:
-        print(f"Error retrieving competition info for {competition_id}: {response.status_code}")
-        return None
+    return safe_get(f"{BASE_URL}/competitions/{competition_id}/clubs")
 
 if __name__ == "__main__":
     # Get competition info
@@ -172,35 +137,47 @@ if __name__ == "__main__":
 
 
 def clean_team_profile(team_profile):
+    """Pulisce il profilo della squadra, restituisce None se team_profile è None"""
+    if team_profile is None:
+        return None
+
     clean_profile = team_profile.copy()
     
     keys_to_remove = [
         "id", "url", "fax", "addressLine1", "addressLine2", "addressLine3",
-         "tel", "fax", "website", "email", "members", "membersDate", "legalForm"
+        "tel", "website", "email", "members", "membersDate", "legalForm",
         "colors", "historicalCrests", "otherSports", "confederation", "fifaWorldRanking"
     ]
     
     for key in keys_to_remove:
-        clean_profile.pop(key, None)  
+        clean_profile.pop(key, None)
     
     return clean_profile
 
+
 def clean_player_profile(player_profile):
+    """Pulisce il profilo del giocatore, restituisce None se player_profile è None"""
     if player_profile is None:
-        raise ValueError("player_profile is None — fetch_player_data likely failed to get player data")
+        return None
+
     clean_profile = player_profile.copy()
     
     keys_to_remove = [
         "id", "url", "imageUrl", "outfitter", "socialMedia", "trainerProfile",
-         "relatives"
+        "relatives"
     ]
     
     for key in keys_to_remove:
-        clean_profile.pop(key, None) 
+        clean_profile.pop(key, None)
     
     return clean_profile
 
+
 def clean_player_stats_achievements(player_stats):
+    """Pulisce le statistiche o achievements del giocatore, restituisce None se player_stats è None"""
+    if player_stats is None:
+        return None
+
     clean_stats = player_stats.copy()
     
     keys_to_remove = [
@@ -208,6 +185,6 @@ def clean_player_stats_achievements(player_stats):
     ]
     
     for key in keys_to_remove:
-        clean_stats.pop(key, None) 
+        clean_stats.pop(key, None)
     
     return clean_stats

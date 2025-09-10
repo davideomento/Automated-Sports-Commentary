@@ -3,13 +3,17 @@ import openai
 from transfermarkt_api import get_team_info, get_team_players, clean_team_profile
 from prompt_builder import build_prompt
 from utils import fetch_player_data, toggle_timer, get_elapsed_time, goal_scored, select_competition
+from dotenv import load_dotenv
+import os
 st.set_page_config(
     page_title="Match Event Tracker",
     layout="wide",  # <- questo fa occupare tutta la larghezza
     initial_sidebar_state="auto"
 )
 # --- OpenAI Key ---
-openai.api_key = st.secrets["OPENAI_API_KEY"]
+load_dotenv()  # carica le variabili dal .env
+
+api_key = os.getenv("OPENAI_API_KEY")
 col_left, col_right = st.columns([1, 1])
 
 # -------------------------
@@ -145,7 +149,7 @@ with col_left:
             )
 
             comment_text = response.choices[0].message.content
-            return f"Minute: {kwargs['minute']} - {comment_text}"
+            return f"Minute: {kwargs['minute']+1} - {comment_text}"
 
 
         def confirm_event(kwargs):
