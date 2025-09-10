@@ -1,21 +1,22 @@
-from transformers import AutoTokenizer, AutoModelForCausalLM
 import torch
 import re
+from transformers import AutoTokenizer, AutoModelForCausalLM
 
-# Funzione per tagliare l'output fino all'ultima frase completa
+# === FUNZIONE PER TAGLIARE IL TESTO ALL'ULTIMA FRASE COMPLETA ===
 def trim_to_last_complete_sentence(text):
     sentences = re.split(r'(?<=[.!?]) +', text)
     return " ".join(sentences[:-1]) if len(sentences) > 1 else text
 
 
-# === CARICAMENTO MODELLO MISTRAL DA GOOGLE DRIVE ===
-drive_model_path = "/content/drive/MyDrive/mistral_model"
+# === PERCORSO AL MODELLO SU GOOGLE DRIVE ===
+drive_model_path = "/content/drive/MyDrive/mistral_model"  # <--- cambia se hai un'altra cartella
 
+# === CARICAMENTO MODELLO DA DRIVE ===
 tokenizer = AutoTokenizer.from_pretrained(drive_model_path)
 model = AutoModelForCausalLM.from_pretrained(
     drive_model_path,
-    device_map="auto",        # Fa girare sulla GPU in automatico se disponibile
-    torch_dtype=torch.float16 # Precisione a 16 bit per risparmiare memoria
+    device_map="auto",        # Usa la GPU se disponibile
+    torch_dtype=torch.float16 # Precisione 16-bit per risparmiare memoria
 )
 
 model.eval()
@@ -40,12 +41,12 @@ def generate_with_mistral(prompt, max_new_tokens=300, temperature=0.7, top_p=0.9
     return clean_text
 
 
-# === ESEMPIO DI USO ===
-# Supponiamo che il tuo script abbia generato un prompt
-'''prompt = "Scrivi il commento giornalistico per un gol segnato al minuto 67 in Serie A..."
-print("\n=== PROMPT ===")
-print(prompt)
+# === ESECUZIONE: PROMPT INSERITO DALL'UTENTE ===
+if __name__ == "__main__":
+    prompt = input("\n✍️ Inserisci il prompt: ")
+    print("\n=== PROMPT ===")
+    print(prompt)
 
-output = generate_with_mistral(prompt)
-print("\n=== OUTPUT GENERATO ===")
-print(output)'''
+    output = generate_with_mistral(prompt)
+    print("\n=== OUTPUT GENERATO ===")
+    print(output)
