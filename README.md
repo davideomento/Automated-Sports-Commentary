@@ -22,17 +22,19 @@ The project integrates **data and statistics from Transfermarkt** to guide the l
 2. **Install dependencies**:  
    ```bash
    pip install -r requirements.txt
-Activate the Transfermarkt web scraping:
-Follow the instructions in the transfermarkt-api repository. Some commands may have changed, so check for updated usage.
+   
+3. **Activate the Transfermarkt web scraping**:
+   Follow the instructions in the transfermarkt-api repository. Some commands may have changed, so check for updated usage.
 
-Run the app:
+4. **Run the app**:
 
-bash
-Copia codice
-streamlit run app.py
-A web page will open where you can interact with the interface.
+   ```bash
+   streamlit run app.py
+   
+   A web page will open where you can interact with the interface.
 
-Usage
+**Usage**
+
 Select the home and away teams.
 
 Start the match clock.
