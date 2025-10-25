@@ -31,7 +31,7 @@ The project integrates **data and statistics from Transfermarkt** to guide the l
    ```bash
    streamlit run app.py
    
-   A web page will open where you can interact with the interface.
+A web page will open where you can interact with the interface.
 
 **Usage**
 
