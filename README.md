@@ -19,13 +19,15 @@ The project integrates **data and statistics from Transfermarkt** to guide the l
 1. **Create a virtual environment** with Python >= 3.14.  
    ⚠️ Note: The Transfermarkt API repo requires Python 3.11, so make sure to specify that when installing the environment.
 
-2. **Install dependencies**:  
+2. **Install dependencies**:
+   ```bash  
    pip install -r requirements.txt
 
-3. **Activate the Transfermarkt web scraping**:  
+4. **Activate the Transfermarkt web scraping**:  
    Follow the instructions in the [transfermarkt-api repository](https://github.com/felipeall/transfermarkt-api). Some commands may have changed, so check for updated usage.
 
-4. **Run the app**:  
+5. **Run the app**:
+   ```bash  
    streamlit run app.py  
 
 A web page will open where you can interact with the interface.
