@@ -33,7 +33,7 @@ The project integrates **data and statistics from Transfermarkt** to guide the l
    
 A web page will open where you can interact with the interface.
 
-**Usage**
+# Usage
 
 Select the home and away teams.
 
@@ -42,3 +42,11 @@ Start the match clock.
 Insert match events with brief descriptions.
 
 The LLM will generate contextual live commentary using the data from Transfermarkt.
+
+# Project structure
+├── transfermarkt-api/       # Transfermarkt integration folder
+├── app.py                   # Main Streamlit application
+├── prompt_builder           # Prompt building module
+├── requirements.txt         # Project dependencies
+├── transfermarkt_api.py     # Transfermarkt integration
+└── utils/                   # Helper functions
