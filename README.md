@@ -5,7 +5,7 @@ This project provides an interface to generate **live football match commentarie
 - Apps that provide live commentary.
 - Small football clubs that want to offer a live commentary service for their fanbase.
 
-The project integrates **data and statistics from Transfermarkt** to guide the language model in generating coherent and context-aware commentary. It uses the [Transfermarkt API repository](https://github.com/felipeall/transfermarkt-api) for web scraping to extract and clean team and player information.
+The project integrates **data and statistics from Transfermarkt** to guide the language model in generating coherent and context-aware commentary. It uses the [Transfermarkt API repository](https://github.com/felipeall/transfermarkt-api) for web scraping to extract player information.
 
 ## Features
 
