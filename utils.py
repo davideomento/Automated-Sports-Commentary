@@ -12,6 +12,7 @@ import time
 import streamlit as st
 
 
+
 def fetch_player_data(name):
     """Search player and fetch info, stats, achievements."""
     player_id = search_player_by_name(name)

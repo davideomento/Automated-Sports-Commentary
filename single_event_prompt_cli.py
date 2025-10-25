@@ -10,6 +10,7 @@ from transfermarkt_api import (
 )
 from prompt_builder import build_prompt 
 
+
 def fetch_player_data(name):
     """Search player and fetch info, stats, achievements."""
     player_id = search_player_by_name(name)

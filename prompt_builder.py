@@ -73,6 +73,7 @@ Position of the shot: {shot_position}
 
 OUTPUT:"""
 
+
 def prompt_attempted_shot(home_team, away_team, current_score, minute, shooter, outcome, shot_position, shooter_info, shooter_stats, shooter_achievements, team_profile_away, team_profile_home, team_involved):
     return f"""TASK:
 Act as a live football commentator. Using only the provided match data, create a lively, exhaustive, accurate commentary describing an attempted shot.

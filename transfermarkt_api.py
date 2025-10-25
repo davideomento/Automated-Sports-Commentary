@@ -6,6 +6,7 @@ MAX_RETRIES = 10
 RETRY_DELAY = 1  # secondi
 
 
+
 def safe_get(url):
     """Esegue GET con retry, restituisce None se non va a buon fine"""
     for attempt in range(1, MAX_RETRIES + 1):
