@@ -7,6 +7,8 @@ This project provides an interface to generate **live football match commentarie
 
 The project integrates **data and statistics from Transfermarkt** to guide the language model in generating coherent and context-aware commentary. It uses the [Transfermarkt API repository](https://github.com/felipeall/transfermarkt-api) for web scraping to extract player information.
 
+This project is implemented to work with OpenAI GPT models. Remember to set your OpenAI API key in a .env file to enable comment generation.
+
 ## ✨ Features
 
 - Select home and away teams.
